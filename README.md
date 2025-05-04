@@ -3,7 +3,8 @@
 ![Terminal](https://badgen.net/badge/icon/terminal?icon=terminal&label)
 [![Views](https://views.igorkowalczyk.dev/api/badge/mioamio?repo=autoinstalldriver_windows&label=Views&style=classic)](https://github.com/mioamio/autoinstalldriver_windows/graphs/traffic)
 [![License: MIT](https://img.shields.io/github/license/mioamio/autoinstalldriver_windows?style=flat-square)](https://github.com/mioamio/autoinstalldriver_windows/blob/main/LICENSE)
-[![Telegram](https://badgen.net/badge/Telegram/white/2CA5E0)](https://t.me/topvselennaya)
+[![Telegram](https://badgen.net/badge/Telegram/me/2CA5E0)](https://t.me/topvselennaya)
+[![Telegram](https://badgen.net/badge/Telegram/channel/2CA5E0)](https://t.me/scriptsautomation)
 
 # AutoInstallDriver for Windows - Руководство пользователя / User Guide
 
