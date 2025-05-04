@@ -6,6 +6,7 @@
 [![Telegram](https://badgen.net/badge/Telegram/me/2CA5E0)](https://t.me/topvselennaya)
 [![Telegram](https://badgen.net/badge/Telegram/channel/2CA5E0)](https://t.me/scriptsautomation)
 
+
 # AutoInstallDriver for Windows - Руководство пользователя / User Guide
 
 ## РУС
