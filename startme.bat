@@ -21,17 +21,25 @@ goto ScriptNotFound
 :FoundScript
 if defined scriptPath (
     echo Найден скрипт: "%scriptPath%"
-    powershell.exe -NoLogo -ExecutionPolicy Bypass -NoExit -File "%scriptPath%"
+    start "" powershell.exe -NoLogo -ExecutionPolicy Bypass -File "%scriptPath%"
+    goto EndBatchSuccess
 ) else (
     echo ОШИБКА: Не удалось определить путь к скрипту после поиска.
+    goto EndBatchError
 )
-goto EndBatch
 
 :ScriptNotFound
 echo Ошибка: Скрипт %scriptName% не найден на дисках C-K.
-goto EndBatch
+goto EndBatchError
 
-:EndBatch
+:EndBatchSuccess
+echo.
+echo PowerShell скрипт запущен. Пакетный скрипт завершается.
+endlocal
+exit /b
+
+:EndBatchError
 echo.
 pause
 endlocal
+exit /b
