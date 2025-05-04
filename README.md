@@ -3,6 +3,7 @@
 ![Terminal](https://badgen.net/badge/icon/terminal?icon=terminal&label)
 [![Views](https://views.igorkowalczyk.dev/api/badge/mioamio?repo=autoinstalldriver_windows&label=Views&style=classic)](https://github.com/mioamio/autoinstalldriver_windows/graphs/traffic)
 [![License: MIT](https://img.shields.io/github/license/mioamio/autoinstalldriver_windows?style=flat-square)](https://github.com/mioamio/autoinstalldriver_windows/blob/main/LICENSE)
+[![Telegram](https://badgen.net/badge/Telegram/white/2CA5E0)](https://t.me/topvselennaya)
 
 # AutoInstallDriver for Windows - Руководство пользователя / User Guide
 
@@ -54,5 +55,3 @@ This guide outlines the steps for using the `startme.bat` and `aid_script.ps1` s
 3.  **Run `startme.bat`:** Navigate to the folder where you saved the files and **double-click the `startme.bat` file** to execute it.
 
 ---
-
-[![Telegram](https://img.shields.io/badge/Telegram-white?style=for-the-badge&logo=telegram&logoColor=2CA5E0)](https://t.me/topvselennaya)
