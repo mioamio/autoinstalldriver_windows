@@ -8,7 +8,7 @@
 
 ## РУС
 
-Данное руководство описывает шаги по использованию скриптов `startme.bat` и `aid_script.ps1` для автоматической установки драйверов в среде Windows.
+Данное руководство описывает шаги по использованию скриптов `startme.bat` и `aid_script.ps1` для автоматической установки драйверов в среде Windows (10 home/pro, 11 home/pro)
 
 **Инструкции по установке и запуску:**
 
@@ -32,7 +32,7 @@
 #
 ## ENG
 
-This guide outlines the steps for using the `startme.bat` and `aid_script.ps1` scripts to automate driver installation in a Windows environment.
+This guide outlines the steps for using the `startme.bat` and `aid_script.ps1` scripts to automate driver installation in a Windows environment (10 home/pro, 11 home/pro)
 
 **Installation and Execution Instructions:**
 
