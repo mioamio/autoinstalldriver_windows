@@ -1,7 +1,7 @@
+![](https://raw.githubusercontent.com/mioamio/autoinstalldriver_windows/main/image.jpg)
 [![Windows](https://badgen.net/badge/icon/windows?icon=windows&label)](https://microsoft.com/windows/)
 ![Terminal](https://badgen.net/badge/icon/terminal?icon=terminal&label)
 ![Просмотры](https://views.igorkowalczyk.dev/api/badge/mioamio?repo=autoinstalldriver_windows&label=Просмотры&style=classic)
-
 
 # Инструкция / Instructions
 
