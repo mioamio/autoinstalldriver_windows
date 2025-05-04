@@ -57,3 +57,6 @@ This guide outlines the steps for using the `startme.bat` and `aid_script.ps1` s
 3.  **Run `startme.bat`:** Navigate to the folder where you saved the files and **double-click the `startme.bat` file** to execute it.
 
 ---
+![image](https://github.com/user-attachments/assets/d23a8257-9366-40c5-8674-c65c7dda8e64)
+
+---
