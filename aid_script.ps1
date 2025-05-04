@@ -1,8 +1,8 @@
-# --- самоповышение до администратора ---
+# --- СЃР°РјРѕРїРѕРІС‹С€РµРЅРёРµ РґРѕ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР° ---
 $currentUser = [System.Security.Principal.WindowsIdentity]::GetCurrent()
 $windowsPrincipal = [System.Security.Principal.WindowsPrincipal]::new($currentUser)
 if (-not $windowsPrincipal.IsInRole([System.Security.Principal.WindowsBuiltInRole]::Administrator)) {
-    Write-Warning "Попытка перезапуска от имени администратора..."
+    Write-Warning "РџРѕРїС‹С‚РєР° РїРµСЂРµР·Р°РїСѓСЃРєР° РѕС‚ РёРјРµРЅРё Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°..."
     try {
         $scriptPath = $MyInvocation.MyCommand.Path
         $arguments = $MyInvocation.BoundParameters.Keys | ForEach-Object {
@@ -19,42 +19,42 @@ if (-not $windowsPrincipal.IsInRole([System.Security.Principal.WindowsBuiltInRol
         Start-Process powershell.exe -ArgumentList $processArgs -Verb RunAs -ErrorAction Stop
         Exit 0
     } catch {
-        Write-Error "Не удалось перезапустить скрипт от имени администратора. Ошибка: $($_.Exception.Message)"
-        Write-Error "Пожалуйста, вручную запустите этот скрипт, щелкнув правой кнопкой мыши и выбрав 'Запуск от имени администратора'."
-        Read-Host "Нажмите Enter для выхода..."
+        Write-Error "РќРµ СѓРґР°Р»РѕСЃСЊ РїРµСЂРµР·Р°РїСѓСЃС‚РёС‚СЊ СЃРєСЂРёРїС‚ РѕС‚ РёРјРµРЅРё Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°. РћС€РёР±РєР°: $($_.Exception.Message)"
+        Write-Error "РџРѕР¶Р°Р»СѓР№СЃС‚Р°, РІСЂСѓС‡РЅСѓСЋ Р·Р°РїСѓСЃС‚РёС‚Рµ СЌС‚РѕС‚ СЃРєСЂРёРїС‚, С‰РµР»РєРЅСѓРІ РїСЂР°РІРѕР№ РєРЅРѕРїРєРѕР№ РјС‹С€Рё Рё РІС‹Р±СЂР°РІ 'Р—Р°РїСѓСЃРє РѕС‚ РёРјРµРЅРё Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°'."
+        Read-Host "РќР°Р¶РјРёС‚Рµ Enter РґР»СЏ РІС‹С…РѕРґР°..."
         Exit 1
     }
 }
 
-Write-Host "Запущен с правами администратора" -ForegroundColor Green
+Write-Host "Р—Р°РїСѓС‰РµРЅ СЃ РїСЂР°РІР°РјРё Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°" -ForegroundColor Green
 Write-Host ""
 
 $devicesToProcessList = [System.Collections.Generic.List[PSObject]]::new()
 $processedInstanceIds = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
 
-Write-Host "1. Поиск устройств с кодом ошибки 28"
+Write-Host "1. РџРѕРёСЃРє СѓСЃС‚СЂРѕР№СЃС‚РІ СЃ РєРѕРґРѕРј РѕС€РёР±РєРё 28"
 try {
     $errorCode28Devices = Get-PnpDevice | Where-Object { $_.ConfigManagerErrorCode -eq 28 } |
                           Select-Object Name, InstanceId, HardwareID, CompatibleID, Class, Status, ConfigManagerErrorCode -ErrorAction Stop
     if ($errorCode28Devices) {
-        Write-Host "  Найдено $($errorCode28Devices.Count) устройств с ошибкой 28:" -ForegroundColor Cyan
+        Write-Host "  РќР°Р№РґРµРЅРѕ $($errorCode28Devices.Count) СѓСЃС‚СЂРѕР№СЃС‚РІ СЃ РѕС€РёР±РєРѕР№ 28:" -ForegroundColor Cyan
         foreach ($device in $errorCode28Devices) {
-            $deviceNameForOutput = if ([string]::IsNullOrWhiteSpace($device.Name)) { '(Нет имени)' } else { $device.Name }
+            $deviceNameForOutput = if ([string]::IsNullOrWhiteSpace($device.Name)) { '(РќРµС‚ РёРјРµРЅРё)' } else { $device.Name }
             Write-Host "    - $deviceNameForOutput ($($device.InstanceId))"
             if ($processedInstanceIds.Add($device.InstanceId)) { $devicesToProcessList.Add($device) }
         }
-    } else { Write-Host "  Устройства с ошибкой 28 не найдены." -ForegroundColor Green }
-} catch { Write-Warning "  Ошибка при поиске устройств с кодом 28: $($_.Exception.Message)" }
+    } else { Write-Host "  РЈСЃС‚СЂРѕР№СЃС‚РІР° СЃ РѕС€РёР±РєРѕР№ 28 РЅРµ РЅР°Р№РґРµРЅС‹." -ForegroundColor Green }
+} catch { Write-Warning "  РћС€РёР±РєР° РїСЂРё РїРѕРёСЃРєРµ СѓСЃС‚СЂРѕР№СЃС‚РІ СЃ РєРѕРґРѕРј 28: $($_.Exception.Message)" }
 Write-Host ""
 
-Write-Host "2. Поиск видеоадаптеров с базовым драйвером Microsoft"
+Write-Host "2. РџРѕРёСЃРє РІРёРґРµРѕР°РґР°РїС‚РµСЂРѕРІ СЃ Р±Р°Р·РѕРІС‹Рј РґСЂР°Р№РІРµСЂРѕРј Microsoft"
 $genericVideoDevicesFound = @()
 try {
     $displayAdapters = Get-PnpDevice -Class Display -ErrorAction Stop |
                        Select-Object Name, InstanceId, HardwareID, CompatibleID, Class, Status, ConfigManagerErrorCode
     foreach ($adapter in $displayAdapters) {
         if (($adapter.Status -eq 'OK' -or $adapter.ConfigManagerErrorCode -eq 0) -and
-            ($adapter.Name -like "*Базовый видеоадаптер*" -or $adapter.Name -like "*Microsoft Basic Display Adapter*")) {
+            ($adapter.Name -like "*Р‘Р°Р·РѕРІС‹Р№ РІРёРґРµРѕР°РґР°РїС‚РµСЂ*" -or $adapter.Name -like "*Microsoft Basic Display Adapter*")) {
             if ($processedInstanceIds.Add($adapter.InstanceId)) {
                 $genericVideoDevicesFound += $adapter
                 $devicesToProcessList.Add($adapter)
@@ -62,65 +62,65 @@ try {
         }
     }
     if ($genericVideoDevicesFound) {
-         Write-Host "  Найдено $($genericVideoDevicesFound.Count) видеоадаптеров с базовым драйвером:" -ForegroundColor Magenta
+         Write-Host "  РќР°Р№РґРµРЅРѕ $($genericVideoDevicesFound.Count) РІРёРґРµРѕР°РґР°РїС‚РµСЂРѕРІ СЃ Р±Р°Р·РѕРІС‹Рј РґСЂР°Р№РІРµСЂРѕРј:" -ForegroundColor Magenta
          foreach($dev in $genericVideoDevicesFound){ Write-Host "    - $($dev.Name) ($($dev.InstanceId))" }
-    } else { Write-Host "  Видеоадаптеры с базовым драйвером не найдены." -ForegroundColor Green }
-} catch { Write-Warning "  Ошибка при поиске видеоадаптеров: $($_.Exception.Message)" }
+    } else { Write-Host "  Р’РёРґРµРѕР°РґР°РїС‚РµСЂС‹ СЃ Р±Р°Р·РѕРІС‹Рј РґСЂР°Р№РІРµСЂРѕРј РЅРµ РЅР°Р№РґРµРЅС‹." -ForegroundColor Green }
+} catch { Write-Warning "  РћС€РёР±РєР° РїСЂРё РїРѕРёСЃРєРµ РІРёРґРµРѕР°РґР°РїС‚РµСЂРѕРІ: $($_.Exception.Message)" }
 Write-Host ""
 
 if ($devicesToProcessList.Count -eq 0) {
-    Write-Host "Устройства, требующие установки/обновления драйверов, не найдены. Все в порядке." -ForegroundColor Green
-    Read-Host "Нажмите Enter для закрытия окна..."
+    Write-Host "РЈСЃС‚СЂРѕР№СЃС‚РІР°, С‚СЂРµР±СѓСЋС‰РёРµ СѓСЃС‚Р°РЅРѕРІРєРё/РѕР±РЅРѕРІР»РµРЅРёСЏ РґСЂР°Р№РІРµСЂРѕРІ, РЅРµ РЅР°Р№РґРµРЅС‹. Р’СЃРµ РІ РїРѕСЂСЏРґРєРµ." -ForegroundColor Green
+    Read-Host "РќР°Р¶РјРёС‚Рµ Enter РґР»СЏ Р·Р°РєСЂС‹С‚РёСЏ РѕРєРЅР°..."
     Exit 0
 }
-Write-Host "Всего найдено $($devicesToProcessList.Count) устройств для обработки."
+Write-Host "Р’СЃРµРіРѕ РЅР°Р№РґРµРЅРѕ $($devicesToProcessList.Count) СѓСЃС‚СЂРѕР№СЃС‚РІ РґР»СЏ РѕР±СЂР°Р±РѕС‚РєРё."
 Write-Host ""
 
-Write-Host "--- Поиск указанной директории и INF файлов ---" -ForegroundColor Yellow
+Write-Host "--- РџРѕРёСЃРє СѓРєР°Р·Р°РЅРЅРѕР№ РґРёСЂРµРєС‚РѕСЂРёРё Рё INF С„Р°Р№Р»РѕРІ ---" -ForegroundColor Yellow
 $driverSearchPaths = @()
 $driveLetters = 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'
 foreach ($driveLetter in $driveLetters) {
-    $path = "$($driveLetter):\ВСТАВИТЬНАЗВАНИЕДИРЕКТОРИИСДРАЙВЕРАМИ"
+    $path = "$($driveLetter):\Р’РЎРўРђР’РРўР¬РќРђР—Р’РђРќРР•Р”РР Р•РљРўРћР РРРЎР”Р РђР™Р’Р•Р РђРњР"
     if (Test-Path -LiteralPath $path -PathType Container -ErrorAction SilentlyContinue) {
-        Write-Host "Найдена директория с драйверами: $path" -ForegroundColor Cyan
+        Write-Host "РќР°Р№РґРµРЅР° РґРёСЂРµРєС‚РѕСЂРёСЏ СЃ РґСЂР°Р№РІРµСЂР°РјРё: $path" -ForegroundColor Cyan
         $driverSearchPaths += $path
     }
 }
 if ($driverSearchPaths.Count -eq 0) {
-    Write-Warning "Директория с драйверами не найдена."
-    Read-Host "Нажмите Enter для закрытия окна..."
+    Write-Warning "Р”РёСЂРµРєС‚РѕСЂРёСЏ СЃ РґСЂР°Р№РІРµСЂР°РјРё РЅРµ РЅР°Р№РґРµРЅР°."
+    Read-Host "РќР°Р¶РјРёС‚Рµ Enter РґР»СЏ Р·Р°РєСЂС‹С‚РёСЏ РѕРєРЅР°..."
     Exit 1
 }
 
-# Собираем все INF файлы
+# РЎРѕР±РёСЂР°РµРј РІСЃРµ INF С„Р°Р№Р»С‹
 $allInfFiles = @()
 foreach ($searchPath in $driverSearchPaths) {
-    Write-Host "Поиск *.inf файлов в '$searchPath' (включая подпапки)..."
+    Write-Host "РџРѕРёСЃРє *.inf С„Р°Р№Р»РѕРІ РІ '$searchPath' (РІРєР»СЋС‡Р°СЏ РїРѕРґРїР°РїРєРё)..."
     try {
         $infFiles = Get-ChildItem -LiteralPath $searchPath -Filter *.inf -Recurse -File -ErrorAction Stop
         if ($infFiles) {
             $allInfFiles += $infFiles
-            Write-Host "  Найдено $($infFiles.Count) *.inf файлов в '$searchPath'." -ForegroundColor Gray
-        } else { Write-Host "  *.inf файлы не найдены в '$searchPath'." -ForegroundColor Gray }
-    } catch { Write-Warning "Ошибка при поиске файлов в '$searchPath': $($_.Exception.Message)" }
+            Write-Host "  РќР°Р№РґРµРЅРѕ $($infFiles.Count) *.inf С„Р°Р№Р»РѕРІ РІ '$searchPath'." -ForegroundColor Gray
+        } else { Write-Host "  *.inf С„Р°Р№Р»С‹ РЅРµ РЅР°Р№РґРµРЅС‹ РІ '$searchPath'." -ForegroundColor Gray }
+    } catch { Write-Warning "РћС€РёР±РєР° РїСЂРё РїРѕРёСЃРєРµ С„Р°Р№Р»РѕРІ РІ '$searchPath': $($_.Exception.Message)" }
 }
 if ($allInfFiles.Count -eq 0) {
-    Write-Warning "В укзанной директории не обнаружено *.inf файлов."
-    Read-Host "Нажмите Enter для закрытия окна..."
+    Write-Warning "Р’ СѓРєР·Р°РЅРЅРѕР№ РґРёСЂРµРєС‚РѕСЂРёРё РЅРµ РѕР±РЅР°СЂСѓР¶РµРЅРѕ *.inf С„Р°Р№Р»РѕРІ."
+    Read-Host "РќР°Р¶РјРёС‚Рµ Enter РґР»СЏ Р·Р°РєСЂС‹С‚РёСЏ РѕРєРЅР°..."
     Exit 1
 }
-Write-Host "Всего найдено $($allInfFiles.Count) *.inf файлов для анализа."
+Write-Host "Р’СЃРµРіРѕ РЅР°Р№РґРµРЅРѕ $($allInfFiles.Count) *.inf С„Р°Р№Р»РѕРІ РґР»СЏ Р°РЅР°Р»РёР·Р°."
 Write-Host ""
 
-Write-Host "--- Поиск подходящих драйверов ---" -ForegroundColor Yellow
+Write-Host "--- РџРѕРёСЃРє РїРѕРґС…РѕРґСЏС‰РёС… РґСЂР°Р№РІРµСЂРѕРІ ---" -ForegroundColor Yellow
 $installAttempts = [ordered]@{} # [InstanceId] = InfPath
 
 foreach ($device in $devicesToProcessList) {
-    $deviceNameForOutput = if ([string]::IsNullOrWhiteSpace($device.Name)) { '(Нет имени)' } else { $device.Name }
+    $deviceNameForOutput = if ([string]::IsNullOrWhiteSpace($device.Name)) { '(РќРµС‚ РёРјРµРЅРё)' } else { $device.Name }
     $deviceInstanceId = $device.InstanceId
     Write-Host "--------------------------------------------------"
-    Write-Host "Обработка устройства: $deviceNameForOutput ($deviceInstanceId)"
-    Write-Host "  Текущий статус: $($device.Status), Код ошибки: $($device.ConfigManagerErrorCode)"
+    Write-Host "РћР±СЂР°Р±РѕС‚РєР° СѓСЃС‚СЂРѕР№СЃС‚РІР°: $deviceNameForOutput ($deviceInstanceId)"
+    Write-Host "  РўРµРєСѓС‰РёР№ СЃС‚Р°С‚СѓСЃ: $($device.Status), РљРѕРґ РѕС€РёР±РєРё: $($device.ConfigManagerErrorCode)"
 
     $deviceHardwareIds = $device.HardwareID | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
     $deviceCompatibleIds = $device.CompatibleID | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
@@ -133,9 +133,9 @@ foreach ($device in $devicesToProcessList) {
     $foundMatchType = $null
 
     foreach ($hwId in $deviceHardwareIds) {
-        Write-Verbose "  Поиск по HardwareID: $hwId"
+        Write-Verbose "  РџРѕРёСЃРє РїРѕ HardwareID: $hwId"
         foreach ($infFile in $allInfFiles) {
-            Write-Verbose "    Проверка файла: $($infFile.FullName)"
+            Write-Verbose "    РџСЂРѕРІРµСЂРєР° С„Р°Р№Р»Р°: $($infFile.FullName)"
             try {
                 $infContent = Get-Content -LiteralPath $infFile.FullName -Raw -Encoding Default -ErrorAction Stop
                 $escapedId = [regex]::Escape($hwId)
@@ -143,22 +143,22 @@ foreach ($device in $devicesToProcessList) {
                     $foundInfForDevice = $infFile.FullName
                     $foundMatchId = $hwId
                     $foundMatchType = "HardwareID"
-                    Write-Host "    Найден кандидат по HardwareID!" -ForegroundColor Green
+                    Write-Host "    РќР°Р№РґРµРЅ РєР°РЅРґРёРґР°С‚ РїРѕ HardwareID!" -ForegroundColor Green
                     Write-Host "    -> INF: $foundInfForDevice"
-                    Write-Host "    -> Совпадение по ${foundMatchType}: $foundMatchId"
-                    break # Нашли совпадение по этому HWID, прекращаем проверку других INF
+                    Write-Host "    -> РЎРѕРІРїР°РґРµРЅРёРµ РїРѕ ${foundMatchType}: $foundMatchId"
+                    break # РќР°С€Р»Рё СЃРѕРІРїР°РґРµРЅРёРµ РїРѕ СЌС‚РѕРјСѓ HWID, РїСЂРµРєСЂР°С‰Р°РµРј РїСЂРѕРІРµСЂРєСѓ РґСЂСѓРіРёС… INF
                 }
-            } catch { Write-Warning "    Не удалось прочитать/обработать $($infFile.FullName): $($_.Exception.Message)" }
+            } catch { Write-Warning "    РќРµ СѓРґР°Р»РѕСЃСЊ РїСЂРѕС‡РёС‚Р°С‚СЊ/РѕР±СЂР°Р±РѕС‚Р°С‚СЊ $($infFile.FullName): $($_.Exception.Message)" }
         }
         if ($foundInfForDevice) { break }
     }
 
     if (-not $foundInfForDevice -and $deviceCompatibleIds) {
-        Write-Host "  По HardwareID совпадений не найдено. Поиск по CompatibleID..." -ForegroundColor Yellow
+        Write-Host "  РџРѕ HardwareID СЃРѕРІРїР°РґРµРЅРёР№ РЅРµ РЅР°Р№РґРµРЅРѕ. РџРѕРёСЃРє РїРѕ CompatibleID..." -ForegroundColor Yellow
         foreach ($compId in $deviceCompatibleIds) {
-            Write-Verbose "  Поиск по CompatibleID: $compId"
+            Write-Verbose "  РџРѕРёСЃРє РїРѕ CompatibleID: $compId"
             foreach ($infFile in $allInfFiles) {
-                Write-Verbose "    Проверка файла: $($infFile.FullName)"
+                Write-Verbose "    РџСЂРѕРІРµСЂРєР° С„Р°Р№Р»Р°: $($infFile.FullName)"
                 try {
                     $infContent = Get-Content -LiteralPath $infFile.FullName -Raw -Encoding Default -ErrorAction Stop
                     $escapedId = [regex]::Escape($compId)
@@ -166,12 +166,12 @@ foreach ($device in $devicesToProcessList) {
                         $foundInfForDevice = $infFile.FullName
                         $foundMatchId = $compId
                         $foundMatchType = "CompatibleID"
-                        Write-Host "    Найден кандидат по CompatibleID!" -ForegroundColor DarkCyan
+                        Write-Host "    РќР°Р№РґРµРЅ РєР°РЅРґРёРґР°С‚ РїРѕ CompatibleID!" -ForegroundColor DarkCyan
                         Write-Host "    -> INF: $foundInfForDevice"
-                        Write-Host "    -> Совпадение по ${foundMatchType}: $foundMatchId"
+                        Write-Host "    -> РЎРѕРІРїР°РґРµРЅРёРµ РїРѕ ${foundMatchType}: $foundMatchId"
                         break
                     }
-                } catch { Write-Warning "    Не удалось прочитать/обработать $($infFile.FullName): $($_.Exception.Message)" }
+                } catch { Write-Warning "    РќРµ СѓРґР°Р»РѕСЃСЊ РїСЂРѕС‡РёС‚Р°С‚СЊ/РѕР±СЂР°Р±РѕС‚Р°С‚СЊ $($infFile.FullName): $($_.Exception.Message)" }
             }
             if ($foundInfForDevice) { break }
         }
@@ -181,7 +181,7 @@ foreach ($device in $devicesToProcessList) {
         $installAttempts[$deviceInstanceId] = $foundInfForDevice
     } else {
         $searchIdsList = ($deviceHardwareIds + $deviceCompatibleIds) -join ', '
-        Write-Warning "  Наиболее подходящий драйвер для $deviceNameForOutput (искали по IDs: $searchIdsList) не найден."
+        Write-Warning "  РќР°РёР±РѕР»РµРµ РїРѕРґС…РѕРґСЏС‰РёР№ РґСЂР°Р№РІРµСЂ РґР»СЏ $deviceNameForOutput (РёСЃРєР°Р»Рё РїРѕ IDs: $searchIdsList) РЅРµ РЅР°Р№РґРµРЅ."
     }
 
 }
@@ -189,73 +189,73 @@ foreach ($device in $devicesToProcessList) {
 Write-Host "--------------------------------------------------"
 Write-Host ""
 if ($installAttempts.Count -gt 0) {
-    Write-Host "--- Попытка установки найденных драйверов ($($installAttempts.Count) шт.) ---" -ForegroundColor Yellow
+    Write-Host "--- РџРѕРїС‹С‚РєР° СѓСЃС‚Р°РЅРѕРІРєРё РЅР°Р№РґРµРЅРЅС‹С… РґСЂР°Р№РІРµСЂРѕРІ ($($installAttempts.Count) С€С‚.) ---" -ForegroundColor Yellow
     foreach ($instanceId in $installAttempts.Keys) {
         $infPath = $installAttempts[$instanceId]
         $deviceInfo = Get-PnpDevice -InstanceId $instanceId -ErrorAction SilentlyContinue | Select-Object Name, Class
-        $deviceNameForOutput = if ($deviceInfo -and (-not [string]::IsNullOrWhiteSpace($deviceInfo.Name))) { $deviceInfo.Name } else { '(Нет имени)' }
+        $deviceNameForOutput = if ($deviceInfo -and (-not [string]::IsNullOrWhiteSpace($deviceInfo.Name))) { $deviceInfo.Name } else { '(РќРµС‚ РёРјРµРЅРё)' }
 
         Write-Host "--------------------------------------------------"
-        Write-Host "Установка драйвера для: '$deviceNameForOutput' ($instanceId)"
-        Write-Host "Используемый INF файл: $infPath"
+        Write-Host "РЈСЃС‚Р°РЅРѕРІРєР° РґСЂР°Р№РІРµСЂР° РґР»СЏ: '$deviceNameForOutput' ($instanceId)"
+        Write-Host "РСЃРїРѕР»СЊР·СѓРµРјС‹Р№ INF С„Р°Р№Р»: $infPath"
 
         $commandArgs = "/add-driver `"$infPath`" /install"
-        Write-Host "Выполнение команды: pnputil.exe $commandArgs"
+        Write-Host "Р’С‹РїРѕР»РЅРµРЅРёРµ РєРѕРјР°РЅРґС‹: pnputil.exe $commandArgs"
 
         try {
             $process = Start-Process pnputil.exe -ArgumentList $commandArgs -Wait -PassThru -NoNewWindow -ErrorAction Stop
 
             if ($process.ExitCode -eq 0 -or $process.ExitCode -eq 3010) {
-                Write-Host "  Команда PnPUtil для '$infPath' успешно выполнена (Код возврата: $($process.ExitCode))." -ForegroundColor Green
+                Write-Host "  РљРѕРјР°РЅРґР° PnPUtil РґР»СЏ '$infPath' СѓСЃРїРµС€РЅРѕ РІС‹РїРѕР»РЅРµРЅР° (РљРѕРґ РІРѕР·РІСЂР°С‚Р°: $($process.ExitCode))." -ForegroundColor Green
                 if ($process.ExitCode -eq 3010) {
                 }
 
-                Write-Host "Ожидание обновления статуса устройства (5 секунд)"
+                Write-Host "РћР¶РёРґР°РЅРёРµ РѕР±РЅРѕРІР»РµРЅРёСЏ СЃС‚Р°С‚СѓСЃР° СѓСЃС‚СЂРѕР№СЃС‚РІР° (5 СЃРµРєСѓРЅРґ)"
                 Start-Sleep -Seconds 5
 
                 $updatedDevice = Get-PnpDevice -InstanceId $instanceId -ErrorAction SilentlyContinue
                 if ($updatedDevice) {
-                    $updatedDeviceName = if ([string]::IsNullOrWhiteSpace($updatedDevice.Name)) { '(Нет имени)' } else { $updatedDevice.Name }
-                    $statusColor = 'Yellow' # По умолчанию
-                    $message = "-> Проблема не решена (Код: $($updatedDevice.ConfigManagerErrorCode)). Проверьте Диспетчер Устройств/лог setupapi.dev.log."
+                    $updatedDeviceName = if ([string]::IsNullOrWhiteSpace($updatedDevice.Name)) { '(РќРµС‚ РёРјРµРЅРё)' } else { $updatedDevice.Name }
+                    $statusColor = 'Yellow' # РџРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
+                    $message = "-> РџСЂРѕР±Р»РµРјР° РЅРµ СЂРµС€РµРЅР° (РљРѕРґ: $($updatedDevice.ConfigManagerErrorCode)). РџСЂРѕРІРµСЂСЊС‚Рµ Р”РёСЃРїРµС‚С‡РµСЂ РЈСЃС‚СЂРѕР№СЃС‚РІ/Р»РѕРі setupapi.dev.log."
 
                     if ($updatedDevice.ConfigManagerErrorCode -eq 0) {
-                        # Если код 0, проверяем, не остался ли базовый видеоадаптер
-                        if ($updatedDevice.Class -eq 'Display' -and ($updatedDevice.Name -like "*Базовый видеоадаптер*" -or $updatedDevice.Name -like "*Microsoft Basic Display Adapter*")) {
+                        # Р•СЃР»Рё РєРѕРґ 0, РїСЂРѕРІРµСЂСЏРµРј, РЅРµ РѕСЃС‚Р°Р»СЃСЏ Р»Рё Р±Р°Р·РѕРІС‹Р№ РІРёРґРµРѕР°РґР°РїС‚РµСЂ
+                        if ($updatedDevice.Class -eq 'Display' -and ($updatedDevice.Name -like "*Р‘Р°Р·РѕРІС‹Р№ РІРёРґРµРѕР°РґР°РїС‚РµСЂ*" -or $updatedDevice.Name -like "*Microsoft Basic Display Adapter*")) {
                             $statusColor = 'Magenta'
-                            $message = "-> Драйвер применен (код 0), но имя '$updatedDeviceName' все еще базовое. Лучший драйвер не подошел или требуется перезагрузка."
+                            $message = "-> Р”СЂР°Р№РІРµСЂ РїСЂРёРјРµРЅРµРЅ (РєРѕРґ 0), РЅРѕ РёРјСЏ '$updatedDeviceName' РІСЃРµ РµС‰Рµ Р±Р°Р·РѕРІРѕРµ. Р›СѓС‡С€РёР№ РґСЂР°Р№РІРµСЂ РЅРµ РїРѕРґРѕС€РµР» РёР»Рё С‚СЂРµР±СѓРµС‚СЃСЏ РїРµСЂРµР·Р°РіСЂСѓР·РєР°."
                         } else {
                             $statusColor = 'Green'
-                            $message = "-> Установка/обновление драйвера прошла успешно! Устройство '$updatedDeviceName' готово."
+                            $message = "-> РЈСЃС‚Р°РЅРѕРІРєР°/РѕР±РЅРѕРІР»РµРЅРёРµ РґСЂР°Р№РІРµСЂР° РїСЂРѕС€Р»Р° СѓСЃРїРµС€РЅРѕ! РЈСЃС‚СЂРѕР№СЃС‚РІРѕ '$updatedDeviceName' РіРѕС‚РѕРІРѕ."
                         }
                     } elseif ($updatedDevice.ConfigManagerErrorCode -eq 28) {
-                         $message = "-> Устройство '$updatedDeviceName' все еще сообщает об отсутствии драйвера (Ошибка 28). PnPUtil не смог применить выбранный INF '$infPath'. Возможно, он несовместим."
+                         $message = "-> РЈСЃС‚СЂРѕР№СЃС‚РІРѕ '$updatedDeviceName' РІСЃРµ РµС‰Рµ СЃРѕРѕР±С‰Р°РµС‚ РѕР± РѕС‚СЃСѓС‚СЃС‚РІРёРё РґСЂР°Р№РІРµСЂР° (РћС€РёР±РєР° 28). PnPUtil РЅРµ СЃРјРѕРі РїСЂРёРјРµРЅРёС‚СЊ РІС‹Р±СЂР°РЅРЅС‹Р№ INF '$infPath'. Р’РѕР·РјРѕР¶РЅРѕ, РѕРЅ РЅРµСЃРѕРІРјРµСЃС‚РёРј."
                     }
 
-                    Write-Host "  Проверка статуса '$updatedDeviceName': Статус=`"$($updatedDevice.Status)`", Код ошибки=`"$($updatedDevice.ConfigManagerErrorCode)`"" -ForegroundColor $statusColor
+                    Write-Host "  РџСЂРѕРІРµСЂРєР° СЃС‚Р°С‚СѓСЃР° '$updatedDeviceName': РЎС‚Р°С‚СѓСЃ=`"$($updatedDevice.Status)`", РљРѕРґ РѕС€РёР±РєРё=`"$($updatedDevice.ConfigManagerErrorCode)`"" -ForegroundColor $statusColor
                     Write-Host "  $message" -ForegroundColor $statusColor
 
-                } else { Write-Warning "  Не удалось получить обновленный статус устройства '$deviceNameForOutput'. Проверьте вручную." }
+                } else { Write-Warning "  РќРµ СѓРґР°Р»РѕСЃСЊ РїРѕР»СѓС‡РёС‚СЊ РѕР±РЅРѕРІР»РµРЅРЅС‹Р№ СЃС‚Р°С‚СѓСЃ СѓСЃС‚СЂРѕР№СЃС‚РІР° '$deviceNameForOutput'. РџСЂРѕРІРµСЂСЊС‚Рµ РІСЂСѓС‡РЅСѓСЋ." }
 
             } else {
-                Write-Warning "  Команда PnPUtil для '$infPath' завершилась с ОШИБКОЙ (Код возврата: $($process.ExitCode)). Установка драйвера не удалась."
-                Write-Warning "  Возможные причины: INF поврежден, не подписан/несовместим, конфликт и т.д."
-                Write-Warning "  Рекомендуется проверить лог: C:\Windows\INF\setupapi.dev.log"
+                Write-Warning "  РљРѕРјР°РЅРґР° PnPUtil РґР»СЏ '$infPath' Р·Р°РІРµСЂС€РёР»Р°СЃСЊ СЃ РћРЁРР‘РљРћР™ (РљРѕРґ РІРѕР·РІСЂР°С‚Р°: $($process.ExitCode)). РЈСЃС‚Р°РЅРѕРІРєР° РґСЂР°Р№РІРµСЂР° РЅРµ СѓРґР°Р»Р°СЃСЊ."
+                Write-Warning "  Р’РѕР·РјРѕР¶РЅС‹Рµ РїСЂРёС‡РёРЅС‹: INF РїРѕРІСЂРµР¶РґРµРЅ, РЅРµ РїРѕРґРїРёСЃР°РЅ/РЅРµСЃРѕРІРјРµСЃС‚РёРј, РєРѕРЅС„Р»РёРєС‚ Рё С‚.Рґ."
+                Write-Warning "  Р РµРєРѕРјРµРЅРґСѓРµС‚СЃСЏ РїСЂРѕРІРµСЂРёС‚СЊ Р»РѕРі: C:\Windows\INF\setupapi.dev.log"
             }
         } catch {
-            Write-Error "  Критическая ошибка при запуске PnPUtil для '$infPath': $($_.Exception.Message)"
-            Write-Error "  Установка для этого устройства прервана."
+            Write-Error "  РљСЂРёС‚РёС‡РµСЃРєР°СЏ РѕС€РёР±РєР° РїСЂРё Р·Р°РїСѓСЃРєРµ PnPUtil РґР»СЏ '$infPath': $($_.Exception.Message)"
+            Write-Error "  РЈСЃС‚Р°РЅРѕРІРєР° РґР»СЏ СЌС‚РѕРіРѕ СѓСЃС‚СЂРѕР№СЃС‚РІР° РїСЂРµСЂРІР°РЅР°."
         }
         Write-Host "--------------------------------------------------"
 
     }
 } else {
-    Write-Host "--- Результат ---" -ForegroundColor Yellow
-    Write-Host "Не было найдено подходящих INF файлов для установки на проблемные устройства (поиск с приоритетом HardwareID)."
+    Write-Host "--- Р РµР·СѓР»СЊС‚Р°С‚ ---" -ForegroundColor Yellow
+    Write-Host "РќРµ Р±С‹Р»Рѕ РЅР°Р№РґРµРЅРѕ РїРѕРґС…РѕРґСЏС‰РёС… INF С„Р°Р№Р»РѕРІ РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё РЅР° РїСЂРѕР±Р»РµРјРЅС‹Рµ СѓСЃС‚СЂРѕР№СЃС‚РІР° (РїРѕРёСЃРє СЃ РїСЂРёРѕСЂРёС‚РµС‚РѕРј HardwareID)."
 }
 
 Write-Host ""
 Write-Host "==================================================" -ForegroundColor Cyan
-Write-Host "          Работа скрипта завершена" -ForegroundColor Cyan
+Write-Host "          Р Р°Р±РѕС‚Р° СЃРєСЂРёРїС‚Р° Р·Р°РІРµСЂС€РµРЅР°" -ForegroundColor Cyan
 Write-Host "==================================================" -ForegroundColor Cyan
-Read-Host "Нажмите Enter для закрытия окна..."
+Read-Host "РќР°Р¶РјРёС‚Рµ Enter РґР»СЏ Р·Р°РєСЂС‹С‚РёСЏ РѕРєРЅР°..."
