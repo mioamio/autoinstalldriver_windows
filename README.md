@@ -57,7 +57,7 @@ This guide outlines the steps for using the `startme.bat` and `aid_script.ps1` s
 3.  **Run `startme.bat`:** Navigate to the folder where you saved the files and **double-click the `startme.bat` file** to execute it.
 
 ---
-![image](https://github.com/user-attachments/assets/d23a8257-9366-40c5-8674-c65c7dda8e64)
+![Безымянный](https://github.com/user-attachments/assets/2caf2ad0-c5db-4a2d-902f-e6e91be113ce)
 
 ---
  ## Идея: Автоматизация рутинной задачи установки драйверов — особенно удобно для системных администраторов или при частой переустановке системы.
