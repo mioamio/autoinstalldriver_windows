@@ -1,6 +1,7 @@
 ![](https://raw.githubusercontent.com/mioamio/autoinstalldriver_windows/main/image.jpg)
 [![Windows](https://badgen.net/badge/icon/windows?icon=windows&label)](https://microsoft.com/windows/)
 ![Terminal](https://badgen.net/badge/icon/terminal?icon=terminal&label)
+[![Github All Releases](https://img.shields.io/github/downloads/mioamio/autoinstalldriver_windows/total.svg)](https://github.com/mioamio/autoinstalldriver_windows/releases)
 [![Views](https://views.igorkowalczyk.dev/api/badge/mioamio?repo=autoinstalldriver_windows&label=Views&style=classic)](https://github.com/mioamio/autoinstalldriver_windows/graphs/traffic)
 [![License: MIT](https://img.shields.io/github/license/mioamio/autoinstalldriver_windows?style=flat-square)](https://github.com/mioamio/autoinstalldriver_windows/blob/main/LICENSE)
 [![Telegram](https://badgen.net/badge/Telegram/me/2CA5E0)](https://t.me/topvselennaya)
